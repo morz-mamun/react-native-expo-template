@@ -7,13 +7,13 @@ import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 
-interface EmptyStateProps {
+type EmptyStateProps = {
   title: string;
   description?: string;
   icon?: LucideIcon;
   action?: { label: string; onPress: () => void };
   className?: string;
-}
+};
 
 /** "Nothing here yet" — for empty lists and screens. Always say what to do next. */
 export function EmptyState({ title, description, icon = Inbox, action, className }: EmptyStateProps) {

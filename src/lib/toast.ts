@@ -2,12 +2,12 @@ import { toast as sonner } from 'sonner-native';
 
 import { haptics } from '@/lib/haptics';
 
-interface ToastOptions {
+type ToastOptions = {
   description?: string;
   /** ms; defaults to the Toaster's duration. */
   duration?: number;
   action?: { label: string; onPress: () => void };
-}
+};
 
 function toSonner({ description, duration, action }: ToastOptions = {}) {
   return {

@@ -7,12 +7,12 @@ import { zustandMMKVStorage } from '@/lib/storage/zustand-storage';
 
 export type ThemePreference = 'light' | 'dark' | 'system';
 
-interface PreferencesState {
+type PreferencesState = {
   theme: ThemePreference;
   hapticsEnabled: boolean;
   setTheme: (theme: ThemePreference) => void;
   setHapticsEnabled: (enabled: boolean) => void;
-}
+};
 
 /**
  * Applies a theme preference everywhere at once:

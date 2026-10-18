@@ -19,6 +19,10 @@ export default function TabsLayout() {
         <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="posts">
+        <NativeTabs.Trigger.Icon sf={{ default: 'text.bubble', selected: 'text.bubble.fill' }} md="forum" />
+        <NativeTabs.Trigger.Label>Posts</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="settings">
         <NativeTabs.Trigger.Icon sf={{ default: 'gearshape', selected: 'gearshape.fill' }} md="settings" />
         <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>

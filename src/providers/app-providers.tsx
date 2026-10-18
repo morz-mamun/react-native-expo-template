@@ -7,6 +7,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AppToaster } from '@/components/shared/app-toaster';
+import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 /**
@@ -15,10 +16,9 @@ import { ThemeProvider } from '@/providers/theme-provider';
  * 2. SafeAreaProvider — insets for screens and overlays.
  * 3. KeyboardProvider — native keyboard tracking for smooth keyboard-aware layouts.
  * 4. ThemeProvider — navigation theme + window background from design tokens.
- * 5. BottomSheetModalProvider — host for `BottomSheet` modals.
+ * 5. QueryProvider — server-state cache (React Query) + native focus/online wiring.
+ * 6. BottomSheetModalProvider — host for `BottomSheet` modals (inside Query so sheets can fetch).
  * Overlays render last (on top): PortalHost (dialogs, menus), then the toast host.
- *
- * Later phases add React Query (+ persistence).
  */
 export function AppProviders({ children }: PropsWithChildren) {
   return (
@@ -26,11 +26,13 @@ export function AppProviders({ children }: PropsWithChildren) {
       <SafeAreaProvider>
         <KeyboardProvider>
           <ThemeProvider>
-            <BottomSheetModalProvider>
-              {children}
-              <PortalHost />
-              <AppToaster />
-            </BottomSheetModalProvider>
+            <QueryProvider>
+              <BottomSheetModalProvider>
+                {children}
+                <PortalHost />
+                <AppToaster />
+              </BottomSheetModalProvider>
+            </QueryProvider>
           </ThemeProvider>
         </KeyboardProvider>
       </SafeAreaProvider>

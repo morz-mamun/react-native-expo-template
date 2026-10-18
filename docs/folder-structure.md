@@ -16,11 +16,12 @@ The code is organised **feature-first, with thin routes**. Each feature owns its
     ├── app/              # Expo Router: ONLY layouts and thin route files
     ├── features/         # Product features: everything a feature needs, together
     ├── components/
-    │   ├── ui/           # Design-system primitives (Button, Text, Input, …): Phase 2
-    │   └── shared/       # App-level composites (ErrorFallback, SplashScreenController, …)
+    │   ├── ui/           # Design-system primitives (Button, Text, Input, …)
+    │   ├── shared/       # App-level composites (Screen, List, EmptyState, ErrorFallback, …)
+    │   └── form/         # TanStack Form bindings (useAppForm, bound fields)
     ├── lib/              # Framework-agnostic infrastructure (env, storage, api, auth, utils)
     ├── providers/        # React context providers, composed in AppProviders
-    ├── stores/           # Cross-feature client state (Zustand): Phase 2+
+    ├── stores/           # Cross-feature client state (Zustand), e.g. preferences
     └── test/             # Test utilities and API mocks: Phase 6
 ```
 
@@ -38,8 +39,8 @@ The code is organised **feature-first, with thin routes**. Each feature owns its
    ├── screens/        # Full screens (exported to routes)
    ├── components/     # UI used only by this feature
    ├── hooks/          # Feature hooks
-   ├── api.ts          # Queries and mutations (Phase 3)
-   ├── keys.ts         # Query-key factory (Phase 3)
+   ├── api.ts          # Fetchers, queryOptions, mutation hooks (see data-fetching.md)
+   ├── keys.ts         # Query-key factory
    ├── types.ts        # Types and Zod schemas
    └── __tests__/
    ```
@@ -56,11 +57,17 @@ src/app/
 ├── +not-found.tsx              # Unknown routes
 └── (app)/                      # Main app area (auth-protected from Phase 4)
     ├── _layout.tsx             # Stack: tabs + full-screen flows/modals above the tabs
+    ├── new-post.tsx            # "/new-post": modal (covers the tab bar)
+    ├── showcase.tsx            # "/showcase": design system (dev/preview only, Stack.Protected)
     └── (tabs)/
         ├── _layout.tsx         # Native tabs (platform tab bar)
         ├── (home)/             # "/": a group, so the first tab needs no redirect
         │   ├── _layout.tsx     # Native stack with large title
         │   └── index.tsx
+        ├── posts/              # "/posts" and "/posts/[id]": list → detail inside the tab
+        │   ├── _layout.tsx
+        │   ├── index.tsx
+        │   └── [id].tsx
         └── settings/           # "/settings"
             ├── _layout.tsx
             └── index.tsx

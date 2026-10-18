@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 const StyledKeyboardAwareScrollView = withUniwind(KeyboardAwareScrollView);
 
-interface ScreenProps {
+type ScreenProps = {
   children: React.ReactNode;
   /**
    * - `scroll` (default): ScrollView that plays well with native large-title headers.
@@ -25,7 +25,7 @@ interface ScreenProps {
   /** Classes for the scroll content (padding, gap). Default `gap-4 p-4`. */
   contentClassName?: string;
   refreshControl?: React.ComponentProps<typeof ScrollView>['refreshControl'];
-}
+};
 
 /** Standard screen container. Every screen should start with it for consistent spacing and behavior. */
 export function Screen({ children, variant = 'scroll', edges = [], className, contentClassName, refreshControl }: ScreenProps) {

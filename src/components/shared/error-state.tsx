@@ -6,14 +6,14 @@ import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 
-interface ErrorStateProps {
+type ErrorStateProps = {
   title?: string;
   message?: string;
   onRetry?: () => void;
   /** Shows the retry button as loading (e.g. while refetching). */
   retrying?: boolean;
   className?: string;
-}
+};
 
 /** Inline error with retry — for failed queries. Keeps the user in context instead of crashing. */
 export function ErrorState({ title = 'Something went wrong', message = 'Please check your connection and try again.', onRetry, retrying = false, className }: ErrorStateProps) {

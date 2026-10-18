@@ -14,6 +14,7 @@ export default function AppLayout() {
   return (
     <Stack screenOptions={{ ...defaultStackOptions, headerShown: false }}>
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="new-post" options={{ presentation: 'modal', headerShown: true, title: 'New post' }} />
       <Stack.Protected guard={showDevTools}>
         <Stack.Screen name="showcase" options={{ headerShown: true, title: 'Design system' }} />
       </Stack.Protected>
