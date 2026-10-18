@@ -1,0 +1,43 @@
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Generated native folders (Continuous Native Generation — configure via app.config.ts)
+/ios
+/android
+.kotlin/
+
+# Environment: env/<env>.env files are committed (non-secret). Machine overrides are not.
+env/local.env
+.env
+.env*.local
+
+# Signing / credentials
+*.jks
+*.p8
+*.p12
+*.key
+*.pem
+*.mobileprovision
+credentials.json
+credentials/
+
+# Testing
+coverage/
+.maestro/screenshots/
+
+# Metro / TypeScript
+.metro-health-check*
+*.tsbuildinfo
+
+# Logs & OS
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.orig.*
+.DS_Store

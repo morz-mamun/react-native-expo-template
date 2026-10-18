@@ -1,0 +1,9 @@
+minimumReleaseAgeExcludePrune: true
+trustPolicy: no-downgrade
+
+# Hoisted node_modules: most reliable layout for Metro, Expo autolinking and EAS.
+nodeLinker: hoisted
+shellEmulator: true
+# pnpm only runs dependency build scripts that are explicitly allowed.
+allowBuilds:
+  esbuild: true
