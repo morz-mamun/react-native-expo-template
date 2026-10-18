@@ -52,7 +52,10 @@ apiClient.interceptors.response.use(undefined, async (error) => {
 
   if (error?.response?.status === 401 && config && !config._retried && !isAuthEndpoint && authHandlers) {
     config._retried = true;
-    const token = await authHandlers.refreshAccessToken();
+    // Sent with an old token that another request already refreshed → just retry with the new one.
+    const current = authHandlers.getAccessToken();
+    const sentWith = String(config.headers.Authorization ?? '').replace(/^Bearer /, '');
+    const token = current && current !== sentWith ? current : await authHandlers.refreshAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
       return apiClient(config);

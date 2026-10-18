@@ -33,7 +33,8 @@ The code is organised **feature-first, with thin routes**. Each feature owns its
    export { SettingsScreen as default } from '@/features/settings/screens/settings-screen';
    ```
    Layouts (`_layout.tsx`) define navigators and screen options only.
-2. **Features are self-contained.** Use this layout inside `src/features/<name>/`:
+2. **Features are self-contained.** (One exception: `features/auth/session-store.ts` is the public "who is signed in" API that any feature may import.)
+   Use this layout inside `src/features/<name>/`:
    ```
    features/posts/
    ├── screens/        # Full screens (exported to routes)
@@ -55,7 +56,10 @@ The code is organised **feature-first, with thin routes**. Each feature owns its
 src/app/
 ├── _layout.tsx                 # Root: providers, splash control, error boundary, root Stack
 ├── +not-found.tsx              # Unknown routes
-└── (app)/                      # Main app area (auth-protected from Phase 4)
+├── (auth)/                     # Signed-out only (Stack.Protected guard={!isSignedIn})
+│   ├── _layout.tsx
+│   └── login.tsx               # "/login"
+└── (app)/                      # Signed-in only (Stack.Protected guard={isSignedIn})
     ├── _layout.tsx             # Stack: tabs + full-screen flows/modals above the tabs
     ├── new-post.tsx            # "/new-post": modal (covers the tab bar)
     ├── showcase.tsx            # "/showcase": design system (dev/preview only, Stack.Protected)

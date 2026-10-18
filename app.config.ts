@@ -109,6 +109,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     'expo-image',
+    // Tokens live in the keychain/keystore. No biometric prompt (add faceIDPermission if you
+    // gate tokens behind Face ID); exclude secure-store data from Android backups.
+    ['expo-secure-store', { faceIDPermission: false, configureAndroidBackup: true }],
     // Local: avoids "Java heap space" during Android resource merging.
     './plugins/with-gradle-memory',
   ],

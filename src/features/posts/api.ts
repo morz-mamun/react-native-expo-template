@@ -5,6 +5,7 @@ import type { OffsetPage } from '@/lib/api/pagination';
 import { infiniteQueryOptions, queryOptions, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 
+import { useSession } from '@/features/auth/session-store';
 import { postKeys } from '@/features/posts/keys';
 import { authorAvatarUrl, postSchema, postsResponseSchema } from '@/features/posts/types';
 import { http } from '@/lib/api/client';
@@ -12,15 +13,15 @@ import { getNextOffset } from '@/lib/api/pagination';
 import { parseResponse } from '@/lib/api/parse-response';
 
 const PAGE_SIZE = 20;
-/** The example API has no auth yet; Phase 4 replaces this with the signed-in user's id. */
-const DEMO_USER_ID = 1;
 
 export type PostsPage = OffsetPage<Post>;
 
 // ─── Fetchers: plain async functions (easy to test, reusable outside React) ────────────────
 
 async function fetchPostsPage({ skip, filters, signal }: { skip: number; filters: PostListFilters; signal?: AbortSignal }): Promise<PostsPage> {
-  const path = filters.search ? 'posts/search' : 'posts';
+  // dummyjson serves authenticated copies of every resource under `auth/` — so these requests
+  // carry the bearer token and exercise the 401 → refresh → retry flow like a real API.
+  const path = filters.search ? 'auth/posts/search' : 'auth/posts';
   const data = await http.get(path, { params: { limit: PAGE_SIZE, skip, q: filters.search || undefined }, signal });
   // Large list → validated in dev/preview/tests, cast in production (see parseResponse).
   const page = parseResponse(postsResponseSchema, data, { strict: false });
@@ -33,12 +34,12 @@ async function fetchPostsPage({ skip, filters, signal }: { skip: number; filters
 }
 
 async function fetchPost(id: number, signal?: AbortSignal): Promise<Post> {
-  return parseResponse(postSchema, await http.get(`posts/${id}`, { signal }), { strict: false });
+  return parseResponse(postSchema, await http.get(`auth/posts/${id}`, { signal }), { strict: false });
 }
 
-async function createPost(input: CreatePostInput): Promise<Post> {
+async function createPost(input: CreatePostInput & { userId: number }): Promise<Post> {
   // Mutation responses are a trust boundary → always validated.
-  return parseResponse(postSchema, await http.post('posts/add', { ...input, userId: DEMO_USER_ID }));
+  return parseResponse(postSchema, await http.post('auth/posts/add', input));
 }
 
 // ─── Query definitions: one object per resource, usable with useQuery / prefetch / ensure ──
@@ -92,9 +93,10 @@ function updateLists(queryClient: QueryClient, update: (pages: PostsPage[]) => P
  */
 export function useCreatePost() {
   const queryClient = useQueryClient();
+  const userId = useSession(state => state.user?.id ?? 0);
 
   return useMutation({
-    mutationFn: createPost,
+    mutationFn: (input: CreatePostInput) => createPost({ ...input, userId }),
     meta: { successMessage: 'Post published', errorMessage: 'Couldn\'t publish post' },
 
     onMutate: async (input) => {
@@ -102,7 +104,7 @@ export function useCreatePost() {
       await queryClient.cancelQueries({ queryKey: postKeys.lists() });
       const snapshot: ListsSnapshot = queryClient.getQueriesData<InfiniteData<PostsPage>>({ queryKey: postKeys.lists() });
 
-      const optimistic: Post = { id: -Date.now(), ...input, userId: DEMO_USER_ID, tags: [], reactions: { likes: 0, dislikes: 0 }, views: 0 };
+      const optimistic: Post = { id: -Date.now(), ...input, userId, tags: [], reactions: { likes: 0, dislikes: 0 }, views: 0 };
       updateLists(queryClient, ([first, ...rest]) =>
         first ? [{ ...first, items: [optimistic, ...first.items], total: first.total + 1 }, ...rest] : []);
 

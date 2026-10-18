@@ -14,13 +14,15 @@ type TextFieldProps = InputProps & {
   /** Error message; when set it replaces the helper text and marks the input invalid. */
   error?: string;
   containerClassName?: string;
+  /** Element inside the field's right edge, e.g. a show-password or clear button. */
+  trailing?: React.ReactNode;
 };
 
 /**
  * Label + Input + helper/error text, wired for accessibility.
  * Tapping the label focuses the input.
  */
-function TextField({ label, helperText, error, containerClassName, ref, ...props }: TextFieldProps) {
+function TextField({ label, helperText, error, containerClassName, trailing, className, ref, ...props }: TextFieldProps) {
   const id = useId();
   const localRef = useRef<React.ComponentRef<typeof Input>>(null);
   const inputRef = ref ?? localRef;
@@ -33,13 +35,17 @@ function TextField({ label, helperText, error, containerClassName, ref, ...props
           {label}
         </Label>
       )}
-      <Input
-        ref={inputRef}
-        invalid={Boolean(error)}
-        aria-labelledby={label ? `${id}-label` : undefined}
-        accessibilityHint={error ?? helperText}
-        {...props}
-      />
+      <View className="justify-center">
+        <Input
+          ref={inputRef}
+          invalid={Boolean(error)}
+          aria-labelledby={label ? `${id}-label` : undefined}
+          accessibilityHint={error ?? helperText}
+          className={cn(trailing ? 'pr-12' : undefined, className)}
+          {...props}
+        />
+        {trailing && <View className="absolute right-0 h-11 w-11 items-center justify-center">{trailing}</View>}
+      </View>
       {message && (
         <Text
           variant="muted"
