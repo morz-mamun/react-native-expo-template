@@ -1,6 +1,12 @@
 minimumReleaseAgeExcludePrune: true
+
 trustPolicy: no-downgrade
 
+# Supply-chain check stays ON (trustPolicy: no-downgrade). Narrow, reviewed exceptions only:
+# - semver@6.3.1: official npm-team security backport (CVE-2022-25883, 2023-07-10) of the 6.x
+#   line, published without provenance after 7.5.x had it → false-positive "downgrade".
+trustPolicyExclude:
+  - semver@6.3.1
 # Hoisted node_modules: most reliable layout for Metro, Expo autolinking and EAS.
 nodeLinker: hoisted
 shellEmulator: true

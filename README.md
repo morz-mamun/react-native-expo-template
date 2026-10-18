@@ -2,7 +2,7 @@
 
 A production-grade starter for React Native apps built with Expo. It gives you a fast, smooth app foundation with all the setup decisions already made. You can clone it, rename it, and start building features on day one.
 
-> **Status:** Phase 1 (Foundation) of 7 is complete. Upcoming phases add the design system, data layer, auth, offline/OTA, testing and full docs. See [Roadmap](#roadmap).
+> **Status:** Phases 1–2 of 7 are complete (foundation and design system). Upcoming phases add the data layer, auth, offline/OTA, testing and full docs. See [Roadmap](#roadmap).
 
 ## What's inside
 
@@ -12,12 +12,15 @@ A production-grade starter for React Native apps built with Expo. It gives you a
 | Language | TypeScript (strict, `noUncheckedIndexedAccess`) |
 | Navigation | **Expo Router**: file-based and typed routes, **native tabs**, native stacks |
 | Config | Validated multi-environment config (`development` / `preview` / `production`) |
+| Design system | **Uniwind** (Tailwind v4) + **React Native Reusables** components, semantic tokens, light/dark/system theme, contrast-checked |
+| Feedback | `sonner-native` toasts, semantic haptics, native Switch, Dialog, Bottom sheet |
+| Lists | FlashList v2 with loading, error, empty and pagination states |
 | Storage | MMKV v4 (fast, synchronous) |
 | Fonts | Inter, **embedded at build time** (no runtime font loading) |
 | Builds & updates | EAS Build profiles + EAS Update channels, fingerprint runtime versions |
 | Quality | ESLint (antfu flat config, formatting included), React Compiler lint rules, Husky, lint-staged, commitlint |
 
-Coming in later phases: Uniwind (Tailwind v4) and React Native Reusables design system, TanStack Query data layer, JWT auth, offline cache, OTA updates, Jest/RNTL/MSW, Maestro and CI.
+Coming in later phases: TanStack Query data layer, JWT auth, offline cache, OTA updates, Jest/RNTL/MSW, Maestro and CI.
 
 ## Prerequisites
 
@@ -66,11 +69,12 @@ A full rebrand checklist arrives in Phase 7.
 
 - [Folder structure](./docs/folder-structure.md): where code goes and why
 - [Environments](./docs/environments.md): env files, validation, build profiles, side-by-side installs
+- [Design system](./docs/design-system.md): tokens, theming, components, toasts, haptics, accessibility
 
 ## Roadmap
 
 1. ✅ **Foundation**: scaffold, structure, env/config, EAS profiles, tooling, native tabs, splash and error handling
-2. ⬜ Design system: tokens, light/dark theme, core components, toasts, haptics
+2. ✅ **Design system**: tokens, light/dark theme, core components, toasts, haptics, showcase
 3. ⬜ Data layer: API client, TanStack Query, pagination, example feature
 4. ⬜ Auth & session: JWT, secure tokens, refresh, protected routes
 5. ⬜ Offline & OTA: persisted cache, offline banner, EAS Update

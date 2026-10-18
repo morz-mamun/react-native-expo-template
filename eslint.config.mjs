@@ -1,5 +1,6 @@
 // @ts-check
 import antfu from '@antfu/eslint-config';
+import betterTailwind from 'eslint-plugin-better-tailwindcss';
 import reactHooks from 'eslint-plugin-react-hooks';
 
 /**
@@ -32,6 +33,15 @@ export default antfu(
     ),
   },
   {
+    // Tailwind class correctness: unknown classes (typos, missing tokens), conflicts, deprecations.
+    // Checked against src/global.css, so a removed design token is a lint error everywhere it's used.
+    name: 'app/tailwind',
+    files: ['src/**/*.tsx'],
+    plugins: { 'better-tailwindcss': betterTailwind },
+    rules: betterTailwind.configs['correctness-error'].rules,
+    settings: { 'better-tailwindcss': { entryPoint: 'src/global.css' } },
+  },
+  {
     name: 'app/conventions',
     rules: {
       // Always use the `@/` alias for cross-folder imports.
@@ -42,6 +52,12 @@ export default antfu(
       'antfu/no-top-level-await': 'off',
       'style/brace-style': ['error', 'stroustrup', { allowSingleLine: true }],
     },
+  },
+  {
+    // Design-system files intentionally export variants (cva) and contexts next to components.
+    name: 'app/ui',
+    files: ['src/components/ui/**/*.tsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
   },
   {
     // Route files may export ErrorBoundary / unstable_settings alongside the screen.
