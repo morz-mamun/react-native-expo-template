@@ -1,16 +1,20 @@
 import type { InfiniteData, QueryClient } from '@tanstack/react-query';
 import type { PostListFilters } from '@/features/posts/keys';
+import type { LikePostVariables } from '@/features/posts/mutation-defaults';
 import type { CreatePostInput, Post } from '@/features/posts/types';
+import type { ApiError } from '@/lib/api/errors';
 import type { OffsetPage } from '@/lib/api/pagination';
-import { infiniteQueryOptions, queryOptions, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Image } from 'expo-image';
+import { infiniteQueryOptions, onlineManager, queryOptions, useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { Image } from 'expo-image';
 import { useSession } from '@/features/auth/session-store';
 import { postKeys } from '@/features/posts/keys';
+import { likePostKey } from '@/features/posts/mutation-defaults';
 import { authorAvatarUrl, postSchema, postsResponseSchema } from '@/features/posts/types';
 import { http } from '@/lib/api/client';
 import { getNextOffset } from '@/lib/api/pagination';
 import { parseResponse } from '@/lib/api/parse-response';
+import { toast } from '@/lib/toast';
 
 const PAGE_SIZE = 20;
 
@@ -52,6 +56,8 @@ export const postQueries = {
       queryFn: ({ pageParam, signal }) => fetchPostsPage({ skip: pageParam, filters, signal }),
       initialPageParam: 0,
       getNextPageParam: getNextOffset,
+      // Keep the list on disk → instant on cold start and readable offline (see persister.ts).
+      meta: { persist: true },
     }),
 
   /** Single post. `useQuery(postQueries.detail(id))` */
@@ -128,5 +134,46 @@ export function useCreatePost() {
       // (dummyjson) doesn't persist new posts, so an immediate refetch would remove it.
       // With a real backend, drop the option to re-sync visible lists immediately.
       queryClient.invalidateQueries({ queryKey: postKeys.lists(), refetchType: 'none' }),
+  });
+}
+
+/** Apply a change to one post everywhere it's cached (detail + every list). */
+function updatePostEverywhere(queryClient: QueryClient, id: number, update: (post: Post) => Post) {
+  queryClient.setQueryData<Post>(postKeys.detail(id), old => (old ? update(old) : old));
+  updateLists(queryClient, pages => pages.map(page => ({
+    ...page,
+    items: page.items.map(post => (post.id === id ? update(post) : post)),
+  })));
+}
+
+/**
+ * Like a post — the OFFLINE-QUEUED example (opt-in; see mutation-defaults.ts).
+ * Optimistic everywhere; while offline the request waits and runs when back online,
+ * even after an app restart (paused mutations are persisted).
+ */
+export function useLikePost() {
+  const queryClient = useQueryClient();
+
+  // Explicit generics: mutationFn comes from setMutationDefaults, so nothing to infer from.
+  return useMutation<Post, ApiError, LikePostVariables, { previousLikes: number }>({
+    mutationKey: likePostKey, // → mutationFn + networkMode 'online' from setMutationDefaults
+    meta: { errorMessage: 'Couldn\'t like post' },
+
+    onMutate: async ({ id, likes }) => {
+      await queryClient.cancelQueries({ queryKey: postKeys.all });
+      updatePostEverywhere(queryClient, id, post => ({ ...post, reactions: { ...post.reactions, likes } }));
+      if (!onlineManager.isOnline())
+        toast.info('Saved offline', { description: 'Your like will sync when you\'re back online.' });
+      return { previousLikes: likes - 1 };
+    },
+
+    onError: (_error, { id }, context) => {
+      if (context)
+        updatePostEverywhere(queryClient, id, post => ({ ...post, reactions: { ...post.reactions, likes: context.previousLikes } }));
+    },
+
+    // Merge only what this endpoint is authoritative for (the demo API omits some fields).
+    onSuccess: (updated, { id }) =>
+      updatePostEverywhere(queryClient, id, post => ({ ...post, reactions: updated.reactions })),
   });
 }

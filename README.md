@@ -2,7 +2,7 @@
 
 A production-grade starter for React Native apps built with Expo. It gives you a fast, smooth app foundation with all the setup decisions already made. You can clone it, rename it, and start building features on day one.
 
-> **Status:** Phases 1–4 of 7 are complete (foundation, design system, data layer, auth). Upcoming phases add offline/OTA, testing and full docs. See [Roadmap](#roadmap).
+> **Status:** Phases 1–5 of 7 are complete (foundation, design system, data layer, auth, offline/OTA). Upcoming phases add testing/CI and final docs. See [Roadmap](#roadmap).
 
 ## What's inside
 
@@ -18,12 +18,14 @@ A production-grade starter for React Native apps built with Expo. It gives you a
 | Forms | **TanStack Form** + Zod with bound field components and server error mapping |
 | Auth | JWT login, tokens in the **keychain** (`expo-secure-store`), single-flight refresh, `Stack.Protected` routes, no login flash |
 | Lists | FlashList v2 with loading, error, empty and pagination states |
+| Offline | Persisted query cache (opt-in, versioned), offline banner, fail-fast or queued offline mutations |
+| OTA updates | EAS Update channels per environment, fingerprint runtime versions, foreground update check + restart prompt |
 | Storage | MMKV v4 (fast, synchronous) |
 | Fonts | Inter, **embedded at build time** (no runtime font loading) |
 | Builds & updates | EAS Build profiles + EAS Update channels, fingerprint runtime versions |
 | Quality | ESLint (antfu flat config, formatting included), React Compiler lint rules, Husky, lint-staged, commitlint |
 
-Coming in later phases: offline cache, OTA updates, Jest/RNTL/MSW, Maestro and CI.
+Coming in later phases: Jest/RNTL/MSW, Maestro and CI.
 
 ## Prerequisites
 
@@ -64,6 +66,8 @@ A full rebrand checklist arrives in Phase 7.
 | `pnpm android` / `pnpm ios` | Build and run a local dev build (`:preview` variants exist) |
 | `pnpm prebuild[:preview\|:production]` | Regenerate `android/` and `ios/` with strict env validation |
 | `pnpm build:<profile>:<platform>` | EAS cloud build, e.g. `pnpm build:preview:android` |
+| `pnpm update:preview` / `update:production` | Publish an OTA update to that channel |
+| `pnpm fingerprint:runtime` | Print the native runtime fingerprint (OTA compatibility) |
 | `pnpm icons:badge` | Regenerate the badged dev/preview icons |
 | `pnpm lint` / `pnpm lint:fix` | Lint and format (ESLint handles formatting; there is no Prettier) |
 | `pnpm type-check` | TypeScript check |
@@ -78,6 +82,8 @@ A full rebrand checklist arrives in Phase 7.
 - [Data fetching](./docs/data-fetching.md): API client, errors, caching defaults, queries, pagination, mutations
 - [Forms](./docs/forms.md): TanStack Form + Zod, bound fields, server errors
 - [Authentication](./docs/auth.md): session flows, token refresh, secure storage, adapting to your backend
+- [Offline & OTA](./docs/offline-and-ota.md): persisted cache, offline mutations, EAS Update, runtime versions
+- [Release](./docs/release.md): EAS build/submit/update, checklist, hotfixes, rollback
 
 ## Roadmap
 
@@ -85,6 +91,6 @@ A full rebrand checklist arrives in Phase 7.
 2. ✅ **Design system**: tokens, light/dark theme, core components, toasts, haptics, showcase
 3. ✅ **Data layer**: API client, TanStack Query, pagination, forms, example `posts` feature
 4. ✅ **Auth & session**: JWT, secure tokens, single-flight refresh, protected routes
-5. ⬜ Offline & OTA: persisted cache, offline banner, EAS Update
+5. ✅ **Offline & OTA**: persisted cache, offline banner, offline mutations, EAS Update
 6. ⬜ Testing & CI: Jest, RNTL, MSW, Maestro, GitHub Actions
 7. ⬜ Performance, docs & polish

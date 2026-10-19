@@ -6,11 +6,12 @@ import { View } from 'react-native';
 import { ErrorState } from '@/components/shared/error-state';
 import { Screen } from '@/components/shared/screen';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Text } from '@/components/ui/text';
-import { findPostInLists, postQueries } from '@/features/posts/api';
+import { findPostInLists, postQueries, useLikePost } from '@/features/posts/api';
 import { PostAvatar } from '@/features/posts/components/post-avatar';
 
 function Stat({ icon, value, label }: { icon: typeof Eye; value: number; label: string }) {
@@ -41,6 +42,7 @@ export function PostDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const postId = Number(id);
   const queryClient = useQueryClient();
+  const likePost = useLikePost();
 
   const { data: post, isPending, isError, error, refetch, isRefetching } = useQuery({
     ...postQueries.detail(postId),
@@ -77,8 +79,17 @@ export function PostDetailScreen() {
               )}
               <Text className="leading-7">{post.body}</Text>
               <Separator />
-              <View className="flex-row gap-6">
-                <Stat icon={ThumbsUp} value={post.reactions.likes} label="likes" />
+              <View className="flex-row items-center gap-6">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  haptic="selection"
+                  accessibilityLabel={`Like, ${post.reactions.likes} likes`}
+                  onPress={() => likePost.mutate({ id: post.id, likes: post.reactions.likes + 1, dislikes: post.reactions.dislikes })}
+                >
+                  <Icon as={ThumbsUp} className="size-4" />
+                  <Text>{post.reactions.likes}</Text>
+                </Button>
                 <Stat icon={ThumbsDown} value={post.reactions.dislikes} label="dislikes" />
                 <Stat icon={Eye} value={post.views} label="views" />
               </View>

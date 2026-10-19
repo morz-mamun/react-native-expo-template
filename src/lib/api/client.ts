@@ -1,7 +1,8 @@
 import type { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import { onlineManager } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { toApiError } from '@/lib/api/errors';
+import { ApiError, toApiError } from '@/lib/api/errors';
 import { Env } from '@/lib/env';
 
 /**
@@ -40,6 +41,11 @@ export const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
+  // Fail fast while offline instead of waiting for a timeout. Queries never get here offline
+  // (they pause); this gives mutations an instant, typed "No internet connection" error.
+  if (!onlineManager.isOnline())
+    throw new ApiError({ kind: 'network' });
+
   const token = authHandlers?.getAccessToken();
   if (token)
     config.headers.Authorization = `Bearer ${token}`;

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Switch } from '@/components/ui/switch';
 import { Text } from '@/components/ui/text';
+import { getUpdateInfo } from '@/features/app-updates/use-app-updates';
 import { useSession } from '@/features/auth/session-store';
 import { ProfileCard } from '@/features/settings/components/profile-card';
 import { SessionDevTools } from '@/features/settings/components/session-dev-tools';
@@ -19,6 +20,7 @@ export function SettingsScreen() {
   const hapticsEnabled = usePreferences(state => state.hapticsEnabled);
   const setHapticsEnabled = usePreferences(state => state.setHapticsEnabled);
   const signOut = useSession(state => state.signOut);
+  const update = getUpdateInfo();
 
   const confirmSignOut = () =>
     Alert.alert('Sign out?', 'You\'ll need to sign in again to use the app.', [
@@ -57,9 +59,12 @@ export function SettingsScreen() {
         </SettingsSection>
       )}
 
-      <SettingsSection title="About">
+      <SettingsSection title="About" footer="Include these details when reporting a bug.">
         <SettingsRow label="Version" right={<Text variant="muted">{Env.VERSION}</Text>} />
         <SettingsRow label="Environment" right={<Text variant="muted">{Env.APP_ENV}</Text>} />
+        <SettingsRow label="Update channel" right={<Text variant="muted">{update.channel}</Text>} />
+        <SettingsRow label="Runtime version" right={<Text variant="muted" numberOfLines={1} className="max-w-40">{update.runtimeVersion}</Text>} />
+        <SettingsRow label="Update" right={<Text variant="muted">{update.updateId}</Text>} />
         <SettingsRow label="API" last right={<Text variant="muted" numberOfLines={1} className="max-w-48">{Env.API_URL}</Text>} />
       </SettingsSection>
 

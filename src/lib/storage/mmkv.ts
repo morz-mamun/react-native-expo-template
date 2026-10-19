@@ -10,6 +10,9 @@ import { createMMKV } from 'react-native-mmkv';
  */
 export const appStorage: MMKV = createMMKV({ id: 'app' });
 
+/** Persisted React Query cache (offline support). Wiped wholesale on sign-out. */
+export const queryCacheStorage: MMKV = createMMKV({ id: 'query-cache' });
+
 /** Every key used with `appStorage`, in one place, to avoid typos and collisions. */
 export const StorageKeys = {
   isFirstLaunch: 'app.isFirstLaunch',

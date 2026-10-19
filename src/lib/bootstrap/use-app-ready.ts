@@ -1,3 +1,4 @@
+import { useIsRestoring } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { useSession } from '@/features/auth/session-store';
@@ -10,17 +11,18 @@ import { useSession } from '@/features/auth/session-store';
  * Startup prerequisites run in parallel:
  *
  * - Session hydrated from secure storage (decides login vs. home).
+ * - Persisted query cache restored from MMKV (so lists render with data, even offline).
  * - Fonts: nothing to wait for — embedded at build time.
- * - Phase 5: persisted query cache restored.
  *
  * Keep this list short: every item delays first paint.
  */
 export function useAppReady(): boolean {
   const status = useSession(state => state.status);
+  const isRestoringCache = useIsRestoring();
 
   useEffect(() => {
     void useSession.getState().hydrate();
   }, []);
 
-  return status !== 'idle';
+  return status !== 'idle' && !isRestoringCache;
 }

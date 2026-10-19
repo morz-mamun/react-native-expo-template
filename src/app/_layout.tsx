@@ -1,8 +1,10 @@
 import { Stack } from 'expo-router';
 
 import { StatusBar } from 'expo-status-bar';
+import { OfflineBanner } from '@/components/shared/offline-banner';
 import { SplashScreenController } from '@/components/shared/splash-screen-controller';
 
+import { useAppUpdates } from '@/features/app-updates/use-app-updates';
 import { useSession } from '@/features/auth/session-store';
 import { AppProviders } from '@/providers/app-providers';
 import '@/global.css';
@@ -29,12 +31,15 @@ function RootNavigator() {
 }
 
 export default function RootLayout() {
+  useAppUpdates();
+
   return (
     <AppProviders>
       <SplashScreenController />
       {/* "auto" follows the app's theme (Appearance override), not just the OS. */}
       <StatusBar style="auto" />
       <RootNavigator />
+      <OfflineBanner />
     </AppProviders>
   );
 }

@@ -13,7 +13,7 @@ Screen ──useQuery(postQueries.detail(id))──► QueryClient cache ──m
 | [`src/lib/api/client.ts`](../src/lib/api/client.ts) | The one Axios instance: base URL, timeout, bearer token, 401 → refresh → retry, errors → `ApiError` |
 | [`src/lib/api/errors.ts`](../src/lib/api/errors.ts) | `ApiError` + `toApiError()` normaliser |
 | [`src/lib/api/query-client.ts`](../src/lib/api/query-client.ts) | `QueryClient` defaults, typed `meta`, global mutation toasts |
-| [`src/providers/query-provider.tsx`](../src/providers/query-provider.tsx) | Provider, plus AppState (focus) and NetInfo (online) wiring, plus devtools |
+| [`src/providers/query-provider.tsx`](../src/providers/query-provider.tsx) | Persisted provider, plus AppState (focus) and NetInfo (online) wiring, plus devtools |
 | [`src/lib/api/parse-response.ts`](../src/lib/api/parse-response.ts) | Zod validation policy |
 | [`src/lib/api/pagination.ts`](../src/lib/api/pagination.ts) | Offset and cursor page helpers |
 | `src/features/<name>/{keys,api,types}.ts` | Per-feature keys, fetchers, query definitions and mutations |
@@ -49,6 +49,7 @@ TanStack Query is told about this type (`Register.defaultError`), so `error` fro
 | `refetchOnWindowFocus` | on | "Focus" means the app returns to the foreground (AppState) |
 | `refetchOnReconnect` / `networkMode: 'online'` | on | Queries pause offline and resume when NetInfo reports a connection |
 | `mutations.retry` | off | Mutations aren't idempotent. Let the user retry |
+| `mutations.networkMode` | `'always'` | **Fail fast offline**: the client rejects instantly and a "You're offline" toast appears. Opt into queue-while-offline per mutation; see [offline-and-ota.md](./offline-and-ota.md) |
 
 Tune these per query when needed, for example `staleTime: Infinity` for data that never changes, or `staleTime: 0` for live data.
 

@@ -50,6 +50,10 @@ function shouldRetry(failureCount: number, error: unknown) {
  * - retry: never on 4xx/parse errors; network/5xx retried twice with exponential backoff.
  * - refetchOnWindowFocus: "window focus" = app returns to foreground (wired to AppState).
  * - Mutations never retry automatically (not idempotent) and report errors via toast.
+ * - Offline policy for mutations (`networkMode: 'always'`): FAIL FAST — the request runs, the
+ *   client rejects instantly with a network ApiError and the user gets a toast. Opt in to
+ *   queue-while-offline per mutation with `networkMode: 'online'` + `setMutationDefaults`
+ *   (see features/posts/mutation-defaults.ts and docs/offline-and-ota.md).
  */
 export const queryClient = new QueryClient({
   mutationCache: new MutationCache({
@@ -61,6 +65,10 @@ export const queryClient = new QueryClient({
     onError: (error, _variables, _result, mutation) => {
       if (mutation.meta?.silent || error.kind === 'cancelled')
         return;
+      if (error.isNetworkError) {
+        toast.error('You\'re offline', { description: 'This action needs an internet connection. Try again when you\'re back online.' });
+        return;
+      }
       toast.error(mutation.meta?.errorMessage ?? 'Something went wrong', { description: error.message });
     },
   }),
@@ -76,7 +84,7 @@ export const queryClient = new QueryClient({
     },
     mutations: {
       retry: false,
-      networkMode: 'online',
+      networkMode: 'always',
     },
   },
 });
