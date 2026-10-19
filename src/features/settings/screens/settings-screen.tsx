@@ -1,10 +1,10 @@
 import { Link } from 'expo-router';
-import { ChevronRight, LogOut } from 'lucide-react-native';
 import { Alert, Pressable, View } from 'react-native';
-
 import { Screen } from '@/components/shared/screen';
+
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { ChevronRight, LogOut } from '@/components/ui/icons';
 import { Switch } from '@/components/ui/switch';
 import { Text } from '@/components/ui/text';
 import { getUpdateInfo } from '@/features/app-updates/use-app-updates';

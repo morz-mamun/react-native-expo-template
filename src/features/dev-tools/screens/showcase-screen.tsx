@@ -1,8 +1,7 @@
-import { Bell, Heart, Plus, Trash2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
-
 import { EmptyState } from '@/components/shared/empty-state';
+
 import { ErrorState } from '@/components/shared/error-state';
 import { Screen } from '@/components/shared/screen';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Icon } from '@/components/ui/icon';
+import { Bell, Heart, Plus, Trash2 } from '@/components/ui/icons';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';

@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { Eye, ThumbsDown, ThumbsUp } from 'lucide-react-native';
 import { View } from 'react-native';
-
 import { ErrorState } from '@/components/shared/error-state';
+
 import { Screen } from '@/components/shared/screen';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { Eye, ThumbsDown, ThumbsUp } from '@/components/ui/icons';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Text } from '@/components/ui/text';

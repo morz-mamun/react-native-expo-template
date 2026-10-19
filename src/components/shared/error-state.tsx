@@ -1,8 +1,8 @@
-import { RefreshCw, TriangleAlert } from 'lucide-react-native';
 import { View } from 'react-native';
-
 import { Button } from '@/components/ui/button';
+
 import { Icon } from '@/components/ui/icon';
+import { RefreshCw, TriangleAlert } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 

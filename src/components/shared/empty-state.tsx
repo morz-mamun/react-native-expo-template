@@ -1,9 +1,9 @@
 import type { LucideIcon } from 'lucide-react-native';
-import { Inbox } from 'lucide-react-native';
 import { View } from 'react-native';
-
 import { Button } from '@/components/ui/button';
+
 import { Icon } from '@/components/ui/icon';
+import { Inbox } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 

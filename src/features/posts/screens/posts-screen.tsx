@@ -8,6 +8,11 @@ import { postQueries } from '@/features/posts/api';
 import { PostRow } from '@/features/posts/components/post-row';
 import { flattenPages } from '@/lib/api/pagination';
 
+/** Module-level component: a stable type, so FlashList never remounts separators. */
+function PostSeparator() {
+  return <Separator className="ml-18" />;
+}
+
 export function PostsScreen() {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -34,7 +39,7 @@ export function PostsScreen() {
           onPress={post => router.push({ pathname: '/posts/[id]', params: { id: String(post.id) } })}
         />
       )}
-      ItemSeparatorComponent={() => <Separator className="ml-18" />}
+      ItemSeparatorComponent={PostSeparator}
       isLoading={isPending}
       isError={isError}
       errorMessage={error?.message}

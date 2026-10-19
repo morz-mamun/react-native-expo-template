@@ -1,11 +1,11 @@
 import * as DialogPrimitive from '@rn-primitives/dialog';
-import { X } from 'lucide-react-native';
 import * as React from 'react';
 import { Platform, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, ReduceMotion, ZoomIn } from 'react-native-reanimated';
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens';
-
 import { Icon } from '@/components/ui/icon';
+
+import { X } from '@/components/ui/icons';
 import { MAX_FONT_SCALE } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 

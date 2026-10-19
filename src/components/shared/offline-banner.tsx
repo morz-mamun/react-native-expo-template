@@ -1,11 +1,11 @@
 import { onlineManager } from '@tanstack/react-query';
-import { WifiOff } from 'lucide-react-native';
 import { useSyncExternalStore } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp, ReduceMotion } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { Icon } from '@/components/ui/icon';
+
+import { WifiOff } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 
 function useIsOnline() {

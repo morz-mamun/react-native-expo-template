@@ -1,12 +1,12 @@
 import type { TextInput } from 'react-native';
 import type { LoginInput } from '@/features/auth/types';
-import { LogIn } from 'lucide-react-native';
 import { useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
-
 import { useAppForm } from '@/components/form/use-app-form';
+
 import { Screen } from '@/components/shared/screen';
 import { Icon } from '@/components/ui/icon';
+import { LogIn } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 import { PasswordToggle } from '@/features/auth/components/password-toggle';
 import { useSession } from '@/features/auth/session-store';

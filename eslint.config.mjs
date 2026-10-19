@@ -46,7 +46,12 @@ export default antfu(
     name: 'app/conventions',
     rules: {
       // Always use the `@/` alias for cross-folder imports.
-      'no-restricted-imports': ['error', { patterns: [{ group: ['../*'], message: 'Use the @/ alias instead of parent-relative imports.' }] }],
+      'no-restricted-imports': 'off',
+      'ts/no-restricted-imports': ['error', {
+        patterns: [{ group: ['../*'], message: 'Use the @/ alias instead of parent-relative imports.' }],
+        // Barrel import bundles all ~1,900 icons (Metro doesn't tree-shake). Types are fine.
+        paths: [{ name: 'lucide-react-native', allowTypeImports: true, message: 'Import icons from @/components/ui/icons (per-icon deep imports).' }],
+      }],
       // RN convention: `const styles = StyleSheet.create(...)` lives at the bottom of the file.
       'ts/no-use-before-define': ['error', { functions: false, classes: false, variables: false }],
       // `type` everywhere: interfaces aren't assignable to Record<string, unknown>, which breaks

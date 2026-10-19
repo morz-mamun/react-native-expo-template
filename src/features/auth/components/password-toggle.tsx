@@ -1,7 +1,7 @@
-import { Eye, EyeOff } from 'lucide-react-native';
 import { Pressable } from 'react-native';
-
 import { Icon } from '@/components/ui/icon';
+
+import { Eye, EyeOff } from '@/components/ui/icons';
 
 /** Show/hide button for a password field (use as `TextField` `trailing`). */
 export function PasswordToggle({ visible, onToggle }: { visible: boolean; onToggle: () => void }) {

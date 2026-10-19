@@ -1,8 +1,8 @@
 import type { Post } from '@/features/posts/types';
-import { Eye, ThumbsUp } from 'lucide-react-native';
 import { Pressable, View } from 'react-native';
-
 import { Icon } from '@/components/ui/icon';
+
+import { Eye, ThumbsUp } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 import { PostAvatar } from '@/features/posts/components/post-avatar';
 import { cn } from '@/lib/utils';

@@ -1,9 +1,9 @@
 import type { LucideIcon } from 'lucide-react-native';
 import type { ThemePreference } from '@/stores/preferences-store';
-import { Moon, Smartphone, Sun } from 'lucide-react-native';
 import { Pressable, View } from 'react-native';
-
 import { Icon } from '@/components/ui/icon';
+
+import { Moon, Smartphone, Sun } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 import { haptics } from '@/lib/haptics';
 import { cn } from '@/lib/utils';

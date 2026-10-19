@@ -1,11 +1,11 @@
 import { Link } from 'expo-router';
-import { Palette, Rocket } from 'lucide-react-native';
-
 import { Screen } from '@/components/shared/screen';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Icon } from '@/components/ui/icon';
+import { Palette, Rocket } from '@/components/ui/icons';
 import { Text } from '@/components/ui/text';
 import { Env } from '@/lib/env';
 

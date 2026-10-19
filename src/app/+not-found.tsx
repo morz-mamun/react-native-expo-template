@@ -1,17 +1,19 @@
 import { Link } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { EmptyState } from '@/components/shared/empty-state';
+import { Screen } from '@/components/shared/screen';
+import { Button } from '@/components/ui/button';
+import { Text } from '@/components/ui/text';
 
 export default function NotFoundScreen() {
   return (
-    <View style={styles.root}>
-      <Text style={styles.title}>This screen doesn't exist.</Text>
-      <Link href="/" style={styles.link}>Go to home</Link>
-    </View>
+    <Screen variant="static" className="items-center justify-center">
+      <EmptyState title="Page not found" description="This screen doesn't exist or was moved." className="flex-none" />
+      <Link href="/" asChild>
+        <Button variant="outline">
+          <Text>Go to home</Text>
+        </Button>
+      </Link>
+    </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  root: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12, padding: 24 },
-  title: { fontFamily: 'Inter', fontSize: 18, fontWeight: '600' },
-  link: { fontFamily: 'Inter', fontSize: 15, color: '#2563EB', paddingVertical: 12 },
-});
