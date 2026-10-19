@@ -12,4 +12,7 @@ nodeLinker: hoisted
 shellEmulator: true
 # pnpm only runs dependency build scripts that are explicitly allowed.
 allowBuilds:
+  # Jest/eslint deps that ship prebuilt binaries; their scripts are only source-build fallbacks.
+  '@parcel/watcher': false
   esbuild: true
+  unrs-resolver: false

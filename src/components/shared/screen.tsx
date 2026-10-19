@@ -25,10 +25,12 @@ type ScreenProps = {
   /** Classes for the scroll content (padding, gap). Default `gap-4 p-4`. */
   contentClassName?: string;
   refreshControl?: React.ComponentProps<typeof ScrollView>['refreshControl'];
+  /** For E2E tests (Maestro `id:`) and component tests. */
+  testID?: string;
 };
 
 /** Standard screen container. Every screen should start with it for consistent spacing and behavior. */
-export function Screen({ children, variant = 'scroll', edges = [], className, contentClassName, refreshControl }: ScreenProps) {
+export function Screen({ children, variant = 'scroll', edges = [], className, contentClassName, refreshControl, testID }: ScreenProps) {
   const insets = useSafeAreaInsets();
   const padding = {
     paddingTop: edges.includes('top') ? insets.top : 0,
@@ -40,7 +42,7 @@ export function Screen({ children, variant = 'scroll', edges = [], className, co
 
   if (variant === 'static') {
     return (
-      <View className={cn('flex-1 bg-background', className)} style={padding}>
+      <View className={cn('flex-1 bg-background', className)} style={padding} testID={testID}>
         {children}
       </View>
     );
@@ -51,6 +53,7 @@ export function Screen({ children, variant = 'scroll', edges = [], className, co
       <StyledKeyboardAwareScrollView
         className={cn('flex-1 bg-background', className)}
         style={padding}
+        testID={testID}
         contentContainerClassName={content}
         contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
@@ -66,6 +69,7 @@ export function Screen({ children, variant = 'scroll', edges = [], className, co
     <ScrollView
       className={cn('flex-1 bg-background', className)}
       style={padding}
+      testID={testID}
       contentContainerClassName={content}
       contentInsetAdjustmentBehavior="automatic"
       keyboardShouldPersistTaps="handled"

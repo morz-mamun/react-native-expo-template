@@ -1,0 +1,37 @@
+# Smoke test: launch → sign in with the demo account → home screen.
+#
+#   pnpm e2e        # against an installed preview (release) build
+#   pnpm e2e:dev    # against a development build + running Metro (`pnpm start`)
+#
+# Requires the Maestro CLI (https://maestro.dev) and a booted emulator/simulator.
+appId: ${APP_ID}
+name: Smoke — sign in and reach home
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+    clearKeychain: true # iOS: start signed out
+- runFlow:
+    when:
+      true: ${DEV_CLIENT_URL}
+    file: subflows/open-dev-client.yaml
+- extendedWaitUntil:
+    visible:
+      id: login-screen
+    timeout: 30000
+- tapOn:
+    id: login-username
+- inputText: emilys
+- tapOn:
+    id: login-password
+- inputText: emilyspass
+- hideKeyboard
+- tapOn:
+    id: login-submit
+- extendedWaitUntil:
+    visible:
+      id: home-screen
+    timeout: 30000
+- assertVisible: Welcome 👋
+- takeScreenshot: .maestro/screenshots/smoke-home

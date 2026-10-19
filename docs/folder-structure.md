@@ -11,6 +11,8 @@ The code is organised **feature-first, with thin routes**. Each feature owns its
 ├── assets/               # Icons, splash, badged per-env icons (pnpm icons:badge)
 ├── plugins/              # Local Expo config plugins (native config without touching android/ios)
 ├── scripts/              # Node scripts (icon badges, …)
+├── .maestro/             # E2E flows (Maestro)
+├── .github/workflows/    # CI
 ├── docs/                 # These guides
 └── src/
     ├── app/              # Expo Router: ONLY layouts and thin route files
@@ -22,7 +24,8 @@ The code is organised **feature-first, with thin routes**. Each feature owns its
     ├── lib/              # Framework-agnostic infrastructure (env, storage, api, auth, utils)
     ├── providers/        # React context providers, composed in AppProviders
     ├── stores/           # Cross-feature client state (Zustand), e.g. preferences
-    └── test/             # Test utilities and API mocks: Phase 6
+    ├── test/             # Jest setup, test-utils, MSW server/handlers, mocks
+    └── types/            # Committed ambient types (expo/types, jest)
 ```
 
 ## Rules

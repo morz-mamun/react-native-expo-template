@@ -7,8 +7,9 @@
  * - JS access (navigation theme, system bars, charts): `useCSSVariable('--color-primary')`.
  *   A variable is only available in JS if some className in the app uses it.
  * - Colors are hex on purpose: predictable on every platform and easy to contrast-check.
- *   Every `*-foreground` pair, and `muted-foreground` / `destructive` text on background,
- *   card and muted, meets WCAG AA (≥ 4.5:1) in both themes. Re-check when rebranding.
+ *   Every `*-foreground` pair, and `foreground` / `muted-foreground` / `destructive` text on background,
+ *   card and muted, meets WCAG AA (≥ 4.5:1) in both themes — enforced by
+ *   src/lib/theme/__tests__/contrast.test.ts, so `pnpm test` fails if a rebrand breaks it.
  */
 @import 'tailwindcss';
 @import 'uniwind';
@@ -48,7 +49,7 @@
       --color-accent: #f4f4f5;
       --color-accent-foreground: #18181b;
 
-      --color-destructive: #dc2626;
+      --color-destructive: #d42424;
       --color-destructive-foreground: #ffffff;
       --color-success: #15803d;
       --color-success-foreground: #ffffff;

@@ -64,6 +64,18 @@ export default antfu(
     rules: { 'react-refresh/only-export-components': 'off' },
   },
   {
+    // Tests, mocks and Jest setup: `require` inside jest.mock factories is idiomatic, and test
+    // files aren't React-refresh boundaries.
+    name: 'app/tests',
+    files: ['src/**/__tests__/**', 'src/test/**', 'jest.config.js'],
+    rules: {
+      'ts/no-require-imports': 'off',
+      'react-refresh/only-export-components': 'off',
+      'ts/no-explicit-any': 'off',
+      'react/no-unnecessary-use-prefix': 'off', // mocks mirror real hook names
+    },
+  },
+  {
     // Route files may export ErrorBoundary / unstable_settings alongside the screen.
     name: 'app/routes',
     files: ['src/app/**/*.tsx'],

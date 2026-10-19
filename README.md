@@ -2,7 +2,7 @@
 
 A production-grade starter for React Native apps built with Expo. It gives you a fast, smooth app foundation with all the setup decisions already made. You can clone it, rename it, and start building features on day one.
 
-> **Status:** Phases 1–5 of 7 are complete (foundation, design system, data layer, auth, offline/OTA). Upcoming phases add testing/CI and final docs. See [Roadmap](#roadmap).
+> **Status:** Phases 1–6 of 7 are complete (foundation, design system, data layer, auth, offline/OTA, testing/CI). Phase 7 adds a performance pass and the final docs. See [Roadmap](#roadmap).
 
 ## What's inside
 
@@ -24,8 +24,8 @@ A production-grade starter for React Native apps built with Expo. It gives you a
 | Fonts | Inter, **embedded at build time** (no runtime font loading) |
 | Builds & updates | EAS Build profiles + EAS Update channels, fingerprint runtime versions |
 | Quality | ESLint (antfu flat config, formatting included), React Compiler lint rules, Husky, lint-staged, commitlint |
+| Testing | **Jest** + **React Native Testing Library** + **MSW** (60 tests), contrast test for design tokens, **Maestro** E2E smoke flow, **GitHub Actions** CI |
 
-Coming in later phases: Jest/RNTL/MSW, Maestro and CI.
 
 ## Prerequisites
 
@@ -71,7 +71,9 @@ A full rebrand checklist arrives in Phase 7.
 | `pnpm icons:badge` | Regenerate the badged dev/preview icons |
 | `pnpm lint` / `pnpm lint:fix` | Lint and format (ESLint handles formatting; there is no Prettier) |
 | `pnpm type-check` | TypeScript check |
-| `pnpm check-all` | Lint + type-check (tests are added in Phase 6) |
+| `pnpm test` / `test:watch` / `test:coverage` | Jest unit and integration tests |
+| `pnpm check-all` | Lint + type-check + tests (what CI runs) |
+| `pnpm e2e` / `pnpm e2e:dev` | Maestro smoke test against a preview or development build |
 | `pnpm doctor` | `expo-doctor` dependency and config health check |
 
 ## Documentation
@@ -84,6 +86,7 @@ A full rebrand checklist arrives in Phase 7.
 - [Authentication](./docs/auth.md): session flows, token refresh, secure storage, adapting to your backend
 - [Offline & OTA](./docs/offline-and-ota.md): persisted cache, offline mutations, EAS Update, runtime versions
 - [Release](./docs/release.md): EAS build/submit/update, checklist, hotfixes, rollback
+- [Testing](./docs/testing.md): Jest + RNTL + MSW, mocks, writing tests, Maestro, CI
 
 ## Roadmap
 
@@ -92,5 +95,5 @@ A full rebrand checklist arrives in Phase 7.
 3. ✅ **Data layer**: API client, TanStack Query, pagination, forms, example `posts` feature
 4. ✅ **Auth & session**: JWT, secure tokens, single-flight refresh, protected routes
 5. ✅ **Offline & OTA**: persisted cache, offline banner, offline mutations, EAS Update
-6. ⬜ Testing & CI: Jest, RNTL, MSW, Maestro, GitHub Actions
+6. ✅ **Testing & CI**: Jest, RNTL, MSW, Maestro, GitHub Actions
 7. ⬜ Performance, docs & polish

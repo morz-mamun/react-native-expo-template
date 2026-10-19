@@ -12,7 +12,7 @@ import { Env } from '@/lib/env';
 /** Placeholder home — replace with your app's first real screen. */
 export function HomeScreen() {
   return (
-    <Screen>
+    <Screen testID="home-screen">
       <Card>
         <CardHeader>
           <Badge variant="secondary">

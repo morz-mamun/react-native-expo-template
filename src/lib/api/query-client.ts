@@ -55,36 +55,41 @@ function shouldRetry(failureCount: number, error: unknown) {
  *   queue-while-offline per mutation with `networkMode: 'online'` + `setMutationDefaults`
  *   (see features/posts/mutation-defaults.ts and docs/offline-and-ota.md).
  */
-export const queryClient = new QueryClient({
-  mutationCache: new MutationCache({
-    onSuccess: (_data, _variables, _result, mutation) => {
-      const message = mutation.meta?.successMessage;
-      if (message)
-        toast.success(message);
+export function createQueryClient() {
+  return new QueryClient({
+    mutationCache: new MutationCache({
+      onSuccess: (_data, _variables, _result, mutation) => {
+        const message = mutation.meta?.successMessage;
+        if (message)
+          toast.success(message);
+      },
+      onError: (error, _variables, _result, mutation) => {
+        if (mutation.meta?.silent || error.kind === 'cancelled')
+          return;
+        if (error.isNetworkError) {
+          toast.error('You\'re offline', { description: 'This action needs an internet connection. Try again when you\'re back online.' });
+          return;
+        }
+        toast.error(mutation.meta?.errorMessage ?? 'Something went wrong', { description: error.message });
+      },
+    }),
+    defaultOptions: {
+      queries: {
+        staleTime: 30 * SECOND,
+        gcTime: 24 * HOUR,
+        retry: shouldRetry,
+        retryDelay: attempt => Math.min(1000 * 2 ** attempt, 10 * SECOND),
+        refetchOnWindowFocus: true,
+        refetchOnReconnect: true,
+        networkMode: 'online',
+      },
+      mutations: {
+        retry: false,
+        networkMode: 'always',
+      },
     },
-    onError: (error, _variables, _result, mutation) => {
-      if (mutation.meta?.silent || error.kind === 'cancelled')
-        return;
-      if (error.isNetworkError) {
-        toast.error('You\'re offline', { description: 'This action needs an internet connection. Try again when you\'re back online.' });
-        return;
-      }
-      toast.error(mutation.meta?.errorMessage ?? 'Something went wrong', { description: error.message });
-    },
-  }),
-  defaultOptions: {
-    queries: {
-      staleTime: 30 * SECOND,
-      gcTime: 24 * HOUR,
-      retry: shouldRetry,
-      retryDelay: attempt => Math.min(1000 * 2 ** attempt, 10 * SECOND),
-      refetchOnWindowFocus: true,
-      refetchOnReconnect: true,
-      networkMode: 'online',
-    },
-    mutations: {
-      retry: false,
-      networkMode: 'always',
-    },
-  },
-});
+  });
+}
+
+/** The app's singleton client. Tests use `createQueryClient()` for isolation. */
+export const queryClient = createQueryClient();

@@ -34,7 +34,7 @@ Use them as classes: `bg-primary`, `text-muted-foreground`, `border-border`.
 ### Rebranding
 
 1. Edit the values under `@variant light` and `@variant dark` in `src/global.css`. Usually `--color-primary` and `--color-primary-foreground` are enough.
-2. Keep each `*-foreground` readable on its pair: **WCAG AA contrast is at least 4.5:1**. The shipped palette passes in both themes. Check yours with any contrast checker.
+2. Keep each `*-foreground` readable on its pair: **WCAG AA contrast is at least 4.5:1**. `pnpm test` enforces this: [`contrast.test.ts`](../src/lib/theme/__tests__/contrast.test.ts) parses `global.css` and fails on any pair below AA in either theme.
 3. Optionally change the font: embed it in `app.config.ts` (`expo-font` plugin) and set `--font-sans`.
 
 You don't need to change any component code.

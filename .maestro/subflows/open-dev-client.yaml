@@ -1,0 +1,8 @@
+# Dev-client builds start in the Expo launcher. Deep-link straight into the running Metro bundle.
+appId: ${APP_ID}
+---
+- openLink: ${DEV_CLIENT_URL}
+- extendedWaitUntil:
+    visible:
+      id: login-screen
+    timeout: 60000

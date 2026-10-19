@@ -42,7 +42,7 @@ export function LoginScreen() {
   });
 
   return (
-    <Screen variant="keyboard" edges={['top', 'bottom']} contentClassName="flex-grow justify-center gap-8 p-6">
+    <Screen variant="keyboard" edges={['top', 'bottom']} contentClassName="flex-grow justify-center gap-8 p-6" testID="login-screen">
       <View className="items-center gap-3">
         <View className="size-16 items-center justify-center rounded-2xl bg-primary">
           <Icon as={LogIn} className="size-8 text-primary-foreground" />
